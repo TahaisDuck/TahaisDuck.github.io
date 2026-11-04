@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Thiệp mời tốt nghiệp · Thanh Hằng</title>
+  <meta name="description" content="Thiệp mời dự lễ tốt nghiệp của Thanh Hằng">
+  <meta property="og:title" content="Thanh Hằng mời bạn dự lễ tốt nghiệp">
+  <meta property="og:description" content="Cho vịt ăn bánh mì để mở thư mời nha!">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦆</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <!-- Cảnh nền pixel (pixel.js tự vẽ) -->
+  <div class="scene" aria-hidden="true"></div>
+
+  <canvas id="confetti" class="confetti" aria-hidden="true"></canvas>
+  <div id="crumbs" class="crumbs" aria-hidden="true"></div>
+
+  <main>
+    <!-- Bước 1: thư còn niêm phong, cho vịt ăn bánh mì để mở -->
+    <section id="stage-lock" class="stage-lock">
+      <div class="lock-card px-box no-duck">
+        <p class="eyebrow" data-config="eyebrow"></p>
+        <h1 class="title">Bạn có một lá thư! <i class="pxi" data-icon="heart" data-scale="4"></i></h1>
+        <p class="lead">
+          Chú vịt đang đói. Chạm vào <strong>miếng bánh mì <i class="pxi" data-icon="bread"></i></strong>
+          để vịt chạy tới ăn, ăn đủ <strong data-config="crumbs"></strong> miếng là thư sẽ mở.
+        </p>
+        <div id="crumb-meter" class="crumb-meter" aria-label="Số bánh mì vịt đã ăn"></div>
+        <p class="hint">Máy tính: dùng phím mũi tên hoặc W A S D để điều khiển vịt.</p>
+      </div>
+
+      <div id="envelope" class="envelope"></div>
+
+      <p id="lock-status" class="lock-status px-box" role="status"></p>
+      <button id="skip" type="button" class="skip">&gt; Bỏ qua, mở thư luôn</button>
+    </section>
+
+    <!-- Bước 2: thiệp mời -->
+    <section id="stage-invite" class="stage-invite" hidden>
+      <header class="hero px-box">
+        <i class="pxi corner left" data-icon="star" data-scale="4"></i>
+        <i class="pxi corner right" data-icon="star" data-scale="4"></i>
+        <p class="eyebrow" data-config="eyebrow"></p>
+        <p class="dear">Gửi</p>
+        <h1 id="guest" class="guest"></h1>
+        <p class="lead" data-config="message"></p>
+        <div class="banner px-box"><span data-config="title"></span> của <strong data-config="host"></strong></div>
+      </header>
+
+      <div id="countdown" class="countdown">
+        <div class="tick px-box"><span data-unit="days">0</span><small>NGÀY</small></div>
+        <div class="tick px-box"><span data-unit="hours">00</span><small>GIỜ</small></div>
+        <div class="tick px-box"><span data-unit="minutes">00</span><small>PHÚT</small></div>
+        <div class="tick px-box"><span data-unit="seconds">00</span><small>GIÂY</small></div>
+      </div>
+      <p id="countdown-done" class="countdown-done" hidden>Hôm nay là ngày đó rồi!</p>
+
+      <div class="details">
+        <article class="detail px-box">
+          <div class="detail-icon px-box"><i class="pxi" data-icon="calendar" data-scale="4"></i></div>
+          <h2>Ngày</h2>
+          <p data-config="dateText"></p>
+          <small data-config="session"></small>
+        </article>
+        <article class="detail px-box">
+          <div class="detail-icon px-box"><i class="pxi" data-icon="cap" data-scale="4"></i></div>
+          <h2>Buổi lễ</h2>
+          <p data-config="ceremony"></p>
+          <small data-config="ceremonyNote"></small>
+        </article>
+        <article class="detail px-box highlight">
+          <div class="detail-icon px-box"><i class="pxi" data-icon="camera" data-scale="4"></i></div>
+          <h2>Chụp ảnh &amp; chúc mừng</h2>
+          <p data-config="reception"></p>
+          <small data-config="receptionNote"></small>
+        </article>
+        <article class="detail px-box">
+          <div class="detail-icon px-box"><i class="pxi" data-icon="pin" data-scale="4"></i></div>
+          <h2>Địa điểm</h2>
+          <p data-config="venue"></p>
+          <small data-config="address"></small>
+        </article>
+      </div>
+
+      <div class="actions">
+        <a id="btn-calendar" class="btn primary" target="_blank" rel="noopener"><i class="pxi" data-icon="calendar"></i> Thêm vào lịch</a>
+        <a id="btn-map" class="btn" target="_blank" rel="noopener"><i class="pxi" data-icon="map"></i> Chỉ đường</a>
+        <button id="btn-feed" type="button" class="btn"><i class="pxi" data-icon="bread"></i> Cho vịt ăn</button>
+        <button id="btn-share" type="button" class="btn"><i class="pxi" data-icon="link"></i> Chia sẻ</button>
+      </div>
+      <p id="feed-count" class="feed-count" role="status"></p>
+
+      <footer class="sign px-box">
+        <p>Mong được gặp bạn hôm đó nha!</p>
+        <p class="signature">Thân mến, <span data-config="host"></span> <i class="pxi" data-icon="heart"></i></p>
+        <button id="btn-replay" type="button" class="link-btn">&lt; Xem lại từ đầu</button>
+      </footer>
+    </section>
+  </main>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/pixel.js"></script>
+  <script src="assets/js/duck.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

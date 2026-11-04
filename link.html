@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Tạo link thiệp mời 🦆</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦆</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    body { overflow: auto !important; touch-action: auto !important; }
+    .maker { max-width: 640px; margin: 6vh auto; padding: 1.6rem; position: relative; z-index: 1; }
+    .maker h1 { margin: 0 0 .4rem; }
+    textarea { width: 100%; min-height: 160px; font: inherit; font-size: 1.3rem; padding: .6rem;
+      border: 4px solid var(--ink); border-radius: 0; resize: vertical; background: #fff; }
+    .list { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: .6rem; }
+    .list li { display: flex; gap: .6rem; align-items: center; background: #fff; border: 4px solid var(--ink); padding: .2rem .6rem; }
+    .list b { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .list a { color: var(--ink); }
+    .btn.small { padding: .1rem .7rem; font-size: 1.15rem; }
+  </style>
+</head>
+<body class="is-open">
+  <div class="scene" aria-hidden="true"></div>
+  <main class="maker px-box">
+    <p class="eyebrow">Chỉ dành cho Thanh Hằng</p>
+    <h1>Tạo link thiệp mời</h1>
+    <p>Mỗi dòng một tên khách mời. Link sẽ hiện “Gửi &lt;tên&gt;” trên thiệp.</p>
+    <textarea id="names" placeholder="Nguyễn Văn A&#10;Trần Thị B"></textarea>
+    <p style="display:flex;gap:.6rem;flex-wrap:wrap">
+      <button id="make" class="btn primary" type="button">&gt; Tạo link</button>
+      <button id="copy-all" class="btn" type="button">Copy tất cả</button>
+    </p>
+    <ul id="list" class="list"></ul>
+  </main>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/pixel.js"></script>
+  <script>
+    const base = new URL("./", location.href).href;
+    const encode = (name) => btoa(String.fromCharCode(...new TextEncoder().encode(name)))
+      .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    let rows = [];
+    function make() {
+      const names = document.getElementById("names").value.split("\n").map((s) => s.trim()).filter(Boolean);
+      rows = names.map((name) => ({ name, url: `${base}?to=${encode(name)}` }));
+      const list = document.getElementById("list");
+      list.replaceChildren(...rows.map(({ name, url }) => {
+        const li = document.createElement("li");
+        const b = document.createElement("b"); b.textContent = name;
+        const a = document.createElement("a"); a.href = url; a.target = "_blank"; a.textContent = "Xem";
+        const btn = document.createElement("button");
+        btn.className = "btn small"; btn.type = "button"; btn.textContent = "Copy";
+        btn.onclick = async () => { await navigator.clipboard.writeText(url); btn.textContent = "Đã copy ✓"; };
+        li.append(b, a, btn);
+        return li;
+      }));
+    }
+    document.getElementById("make").onclick = make;
+    document.getElementById("copy-all").onclick = async (e) => {
+      if (!rows.length) make();
+      await navigator.clipboard.writeText(rows.map((r) => `${r.name}: ${r.url}`).join("\n"));
+      e.target.textContent = "Đã copy ✓";
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+/* ============ Pixel art theme ============ */
+:root {
+  --ink: #2b1d0e;
+  --shadow: rgba(43, 29, 14, .35);
+  --paper: #fff8e7;
+  --duck: #ffd23f;
+  --duck-shade: #e8a800;
+  --beak: #ff8a1c;
+  --pink: #ff5c8a;
+  --pink-soft: #ff8fab;
+  --blue: #5ec8ff;
+  --grass: #7bd389;
+  --grass-dark: #4fb069;
+  --u: 4px; /* 1 "pixel" */
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+
+body {
+  font-family: "VT323", ui-monospace, monospace;
+  font-size: 22px;
+  line-height: 1.2;
+  color: var(--ink);
+  background: linear-gradient(#6ec3ff 0 18%, #84ceff 18% 34%, #9bd8ff 34% 50%, #b3e2ff 50% 66%, #ccecff 66% 82%, #e3f6ff 82%) fixed;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: none;
+}
+body:not(.is-open) { overflow: hidden; touch-action: none; }
+
+[hidden] { display: none !important; }
+
+.px, .px-box img { image-rendering: pixelated; image-rendering: crisp-edges; display: block; }
+
+i.pxi { display: inline-block; vertical-align: -0.12em; font-style: normal; }
+i.pxi .px { display: inline-block; }
+
+/* Hộp pixel: viền 4px với góc khuyết + bóng đổ cứng */
+.px-box {
+  background: var(--paper);
+  box-shadow:
+    0 calc(-1 * var(--u)) 0 0 var(--ink),
+    0 var(--u) 0 0 var(--ink),
+    calc(-1 * var(--u)) 0 0 0 var(--ink),
+    var(--u) 0 0 0 var(--ink),
+    calc(2 * var(--u)) calc(2 * var(--u)) 0 0 var(--shadow);
+}
+
+/* ---------- Cảnh nền ---------- */
+.scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.scene .px { position: absolute; }
+.scene .sun { top: 5vh; right: 7vw; animation: sun-bob 2s steps(2) infinite; }
+@keyframes sun-bob { 50% { transform: translateY(-4px); } }
+.scene .cloud { animation: drift linear infinite; animation-timing-function: steps(300); }
+.scene .c1 { top: 8vh; animation-duration: 70s; animation-delay: -15s; }
+.scene .c2 { top: 22vh; animation-duration: 95s; animation-delay: -60s; }
+.scene .c3 { top: 38vh; animation-duration: 120s; animation-delay: -30s; opacity: .9; }
+@keyframes drift { from { left: -120px; } to { left: 105vw; } }
+.scene .hill { bottom: calc(12vh - 8px); }
+.scene .h1 { left: -6vw; }
+.scene .h2 { right: -8vw; bottom: calc(12vh - 8px); }
+.scene .grass {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 12vh;
+  background-size: 32px 32px; background-repeat: repeat-x; background-color: var(--grass-dark);
+  image-rendering: pixelated;
+}
+
+main { position: relative; z-index: 1; }
+
+/* ---------- Chữ ---------- */
+.eyebrow { margin: 0 0 .2rem; font-size: 1.05rem; letter-spacing: .12em; text-transform: uppercase; color: #b06d00; }
+.title { margin: .2rem 0; font-size: clamp(2.2rem, 7vw, 3rem); font-weight: 400; line-height: 1; }
+.lead { margin: .5rem 0; font-size: 1.35rem; }
+strong { font-weight: 400; color: #c2410c; }
+
+/* ---------- Nút pixel ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  margin: var(--u); padding: .35rem 1rem; font: inherit; font-size: 1.4rem;
+  color: var(--ink); background: #fff; border: 0; text-decoration: none; cursor: pointer;
+  box-shadow:
+    0 -4px 0 0 var(--ink), 0 4px 0 0 var(--ink), -4px 0 0 0 var(--ink), 4px 0 0 0 var(--ink),
+    inset -4px -4px 0 0 rgba(0, 0, 0, .12), 8px 8px 0 0 var(--shadow);
+}
+.btn.primary { background: var(--duck); }
+.btn:hover { transform: translate(-2px, -2px); background-color: #fff3b0; }
+.btn.primary:hover { background: #ffe066; }
+.btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 -4px 0 0 var(--ink), 0 4px 0 0 var(--ink), -4px 0 0 0 var(--ink), 4px 0 0 0 var(--ink), inset 4px 4px 0 0 rgba(0, 0, 0, .12);
+}
+.btn:focus-visible, .skip:focus-visible, .link-btn:focus-visible { outline: 4px dashed var(--pink); outline-offset: 6px; }
+
+/* ---------- Bước 1: thư niêm phong ---------- */
+.stage-lock {
+  min-height: 100vh; min-height: 100dvh;
+  display: flex; flex-direction: column; align-items: center;
+  padding: max(4vh, 1.2rem) 1.2rem 1.6rem; gap: 1.3rem;
+  transition: opacity .45s steps(5);
+}
+.stage-lock.leaving { opacity: 0; }
+
+.lock-card { max-width: 540px; width: 100%; text-align: center; padding: 1rem 1.4rem; cursor: default; }
+.lock-card .title .px { display: inline-block; }
+
+.crumb-meter { display: flex; justify-content: center; gap: 14px; margin: .7rem 0 .4rem; }
+.pip {
+  width: 44px; height: 44px; display: grid; place-items: center; background: #fff;
+  box-shadow: 0 -4px 0 0 var(--ink), 0 4px 0 0 var(--ink), -4px 0 0 0 var(--ink), 4px 0 0 0 var(--ink);
+  opacity: .55;
+}
+.pip.full { background: var(--duck); opacity: 1; animation: pip-pop .3s steps(3); }
+@keyframes pip-pop { 50% { transform: scale(1.3); } }
+
+.hint { margin: .3rem 0 0; font-size: 1.05rem; opacity: .7; }
+@media (hover: none) { .hint { display: none; } }
+
+.lock-status { margin: 0; padding: .1rem 1rem; font-size: 1.5rem; }
+
+.skip, .link-btn {
+  background: none; border: none; color: var(--ink); opacity: .75;
+  font: inherit; font-size: 1.2rem; cursor: pointer;
+}
+.skip:hover, .link-btn:hover { opacity: 1; text-decoration: underline; }
+.skip { margin-top: auto; }
+
+/* Bánh mì */
+.crumbs { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
+.crumb { position: absolute !important; transform: translate(-50%, -50%); animation: crumb-bob 1s steps(2) infinite; }
+.crumb.eaten { animation: crumb-eat .4s steps(4) forwards; }
+@keyframes crumb-bob { 50% { transform: translate(-50%, calc(-50% - 8px)); } }
+@keyframes crumb-eat { to { transform: translate(-50%, -150%) scale(.2); opacity: 0; } }
+
+/* Phong bì */
+.envelope { margin-top: .4rem; animation: env-wiggle 2.4s steps(1) infinite; }
+@keyframes env-wiggle {
+  0%, 76%, 100% { transform: none; }
+  80% { transform: translateX(-8px); }
+  86% { transform: translateX(8px); }
+  92% { transform: translateX(-4px); }
+}
+.envelope.opened { animation: env-open .5s steps(3); }
+@keyframes env-open { 50% { transform: translateY(-24px); } }
+
+/* ---------- Bước 2: thiệp ---------- */
+.stage-invite {
+  max-width: 860px; margin: 0 auto; padding: 2.4rem 1.2rem 10rem;
+  display: flex; flex-direction: column; gap: 1.8rem;
+  animation: rise .5s steps(5);
+}
+@keyframes rise { from { opacity: 0; transform: translateY(40px); } }
+
+.hero { text-align: center; padding: 1.6rem 1.4rem 1.8rem; position: relative; }
+.hero .corner { position: absolute; top: -18px; }
+.hero .corner.left { left: -14px; }
+.hero .corner.right { right: -14px; }
+.dear { margin: .3rem 0 0; font-size: 1.5rem; }
+.guest {
+  margin: .1rem 0 .4rem; font-weight: 400; font-size: clamp(3rem, 11vw, 5rem); line-height: .95;
+  color: var(--pink); word-break: break-word;
+  text-shadow: 3px 0 0 var(--ink), -3px 0 0 var(--ink), 0 3px 0 var(--ink), 0 -3px 0 var(--ink), 6px 6px 0 var(--ink);
+}
+.banner { display: inline-block; margin-top: .6rem; padding: .2rem 1.2rem; font-size: 1.6rem; background: var(--duck); }
+
+.countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
+.tick { text-align: center; padding: .4rem .2rem .3rem; background: #fff; }
+.tick span { display: block; font-size: clamp(2.6rem, 9vw, 4rem); line-height: .9; }
+.tick small { font-size: 1.05rem; letter-spacing: .1em; }
+.countdown-done { text-align: center; font-size: 2rem; margin: 0; }
+
+.details { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2.2rem 1.2rem; margin-top: 1.4rem; }
+.detail { padding: 1rem .9rem; text-align: center; }
+.detail:hover { transform: translateY(-4px); }
+.detail.highlight { background: #fff3b0; }
+.detail-icon {
+  width: 60px; height: 60px; margin: -2.4rem auto .5rem; display: grid; place-items: center; background: var(--blue);
+}
+.detail:nth-child(2) .detail-icon { background: var(--pink-soft); }
+.detail:nth-child(3) .detail-icon { background: var(--duck); }
+.detail:nth-child(4) .detail-icon { background: var(--grass); }
+.detail h2 { margin: 0; font-size: 1.5rem; font-weight: 400; text-transform: uppercase; letter-spacing: .05em; }
+.detail p { margin: .2rem 0; font-size: 1.45rem; color: #c2410c; }
+.detail small { font-size: 1.1rem; opacity: .85; }
+
+.actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .9rem; }
+.feed-count { text-align: center; margin: -.6rem 0 0; font-size: 1.3rem; min-height: 1.2em; }
+
+.sign { text-align: center; padding: 1.1rem; }
+.sign p { margin: .2rem 0; font-size: 1.4rem; }
+.signature { font-size: 2rem !important; }
+
+/* ---------- Vịt ---------- */
+.duck { position: fixed; left: 0; top: 0; cursor: pointer; touch-action: none; user-select: none; -webkit-user-select: none; will-change: transform; }
+.duck-flip { position: relative; }
+.duck-sprite { display: block; }
+.duck.bob .duck-flip { translate: 0 -4px; }
+.duck-shadow {
+  position: absolute; z-index: -1; left: 50%; bottom: -6px; width: 56px; height: 8px; margin-left: -28px;
+  background: var(--shadow); opacity: .7;
+  clip-path: polygon(8px 0, calc(100% - 8px) 0, calc(100% - 8px) 2px, 100% 2px, 100% 6px, calc(100% - 8px) 6px, calc(100% - 8px) 100%, 8px 100%, 8px 6px, 0 6px, 0 2px, 8px 2px);
+}
+.duck.jump .duck-flip { animation: hop .4s steps(4); }
+@keyframes hop { 50% { translate: 0 -28px; } }
+
+.duck-bubble {
+  position: absolute; bottom: calc(100% + 18px); left: 50%; transform: translateX(-50%);
+  padding: .05rem .7rem; white-space: nowrap; font-size: 1.3rem; background: #fff; pointer-events: none;
+}
+.duck-bubble::after {
+  content: ""; position: absolute; top: calc(100% + 4px); left: 50%; width: 8px; height: 8px; margin-left: -4px;
+  background: var(--ink); box-shadow: 4px 8px 0 -0px var(--ink);
+}
+.duck-bubble.pop { animation: bubble-pop .24s steps(3); }
+@keyframes bubble-pop { from { transform: translateX(-50%) scale(.3); } }
+
+.duck-footprints { position: fixed; inset: 0; z-index: 30; pointer-events: none; }
+.footprint { position: absolute; width: 8px; height: 4px; background: rgba(232, 138, 0, .55); animation: fade 1.6s steps(4) forwards; }
+@keyframes fade { to { opacity: 0; } }
+
+.confetti { position: fixed; inset: 0; z-index: 200; pointer-events: none; }
+
+@media (max-width: 560px) {
+  body { font-size: 20px; }
+  .countdown { gap: .7rem; }
+  .btn { font-size: 1.25rem; padding: .3rem .8rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
