@@ -229,3 +229,44 @@ strong { font-weight: 400; color: #c2410c; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* ---------- Thư riêng ---------- */
+.lock-to { margin: .5rem 0 0; font-size: 1.5rem; }
+.lock-to strong { color: var(--pink); }
+.lock-to.error { color: #c0392b; font-size: 1.25rem; }
+.letter { margin: 0 auto; width: min(100%, 460px); padding: 12px; text-align: center; background: #fff; }
+.letter figcaption { margin-bottom: 10px; font-size: 1.35rem; }
+.letter figcaption span { opacity: .65; font-size: 1.1rem; }
+.letter img { display: block; width: 100%; height: auto; image-rendering: auto; }
+
+/* ---------- Điện thoại: 4 thẻ thông tin gọn trong một màn hình (lưới 2×2) ---------- */
+@media (max-width: 560px) {
+  .details { grid-template-columns: 1fr 1fr; gap: 1.9rem .9rem; margin-top: 1.2rem; }
+  .detail { padding: .5rem .45rem .6rem; }
+  .detail:hover { transform: none; }
+  .detail-icon { width: 44px; height: 44px; margin: -1.7rem auto .25rem; }
+  .detail-icon .px { width: 30px; height: auto; }
+  .detail h2 { font-size: 1.1rem; line-height: 1.05; }
+  .detail p { font-size: 1.12rem; line-height: 1.05; margin: .15rem 0; }
+  .detail small { display: block; font-size: .92rem; line-height: 1.05; }
+}
+@media (max-width: 560px) {
+  .detail-icon { margin-bottom: .7rem; }
+  .actions { gap: .7rem .6rem; }
+  .actions .btn { flex: 1 1 40%; justify-content: center; margin: 4px; }
+}
+@media (max-width: 560px) {
+  .actions .btn { white-space: nowrap; font-size: 1.15rem; padding: .3rem .5rem; gap: .35rem; }
+}
+.letter-save { display: block; cursor: pointer; }
+.letter-btn { margin-top: 18px; }
+
+/* Khuôn viên trường trên nền: cao theo màn hình, hai dãy nhà sát hai mép */
+.scene .campus {
+  position: absolute; left: 0; right: 0; bottom: calc(12vh - 6px);
+  height: min(34vh, 36vw, 340px);
+}
+.scene .campus .px { position: absolute; bottom: 0; height: 100%; width: auto; }
+.scene .campus-left { left: 0; }
+.scene .campus-right { right: 0; }
+.scene .campus-tree { left: 50%; transform: translateX(-50%); height: 33.45% !important; z-index: 1; }

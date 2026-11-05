@@ -4,7 +4,26 @@
   const $ = (id) => document.getElementById(id);
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const wait = (ms) => new Promise((r) => setTimeout(r, reducedMotion ? 0 : ms));
-  const STORAGE_KEY = "duck-invite-opened";
+  const params = new URLSearchParams(location.search);
+  // Link riêng dạng ?to=anh-danh (xem assets/letters/guests.json)
+  // Không có ?to= (và không có ?name=) thì dùng thư chung "Mọi người" làm thư chính
+  const DEFAULT_SLUG = "moi-nguoi";
+  const slug = (params.get("to") || (params.get("name") ? "" : DEFAULT_SLUG)).trim();
+  const isSlug = /^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug);
+  const STORAGE_KEY = `duck-invite-opened:${params.get("to") || params.get("name") || ""}`;
+
+  // Tải thông tin thư riêng ngay, trong lúc khách cho vịt ăn
+  const letterPromise = isSlug
+    ? fetch("assets/letters/guests.json")
+        .then((r) => (r.ok ? r.json() : {}))
+        .then((guests) => {
+          const pick = (s) => ({ ...guests[s], url: `assets/letters/${s}.png` });
+          if (guests[slug]) return pick(slug);
+          if (decodeName(slug) !== slug) return null; // link tên kiểu cũ (base64)
+          return guests[DEFAULT_SLUG] ? { ...pick(DEFAULT_SLUG), wrongLink: true } : null; // link sai → thư chung
+        })
+        .catch(() => null)
+    : Promise.resolve(null);
 
   // ---------- Tên khách mời từ link (?to=... do link.html tạo, hoặc ?name=...) ----------
   function decodeName(value) {
@@ -18,9 +37,10 @@
     }
     return value.trim();
   }
-  const params = new URLSearchParams(location.search);
-  const rawName = params.get("to") ? decodeName(params.get("to")) : (params.get("name") || "").trim();
-  const guest = rawName.slice(0, 60) || "bạn thân mến";
+  // ?to= là slug (anh-danh) thì chờ guests.json; còn lại là tên mã hoá base64 từ link.html
+  let rawName = params.get("to") && !isSlug ? decodeName(params.get("to")) : (params.get("name") || "").trim();
+  rawName = rawName.slice(0, 60);
+  const guest = rawName || (isSlug ? "" : "bạn thân mến"); // thư riêng sẽ điền tên sau
 
   // ---------- Điền nội dung từ config ----------
   document.querySelectorAll("[data-config]").forEach((node) => {
@@ -39,6 +59,51 @@
   });
   $("btn-calendar").href = `https://calendar.google.com/calendar/render?${calParams}`;
   $("btn-map").href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(C.mapQuery)}`;
+
+  // ---------- Thư riêng ----------
+  if (isSlug) {
+    // Giữ chỗ ngay từ đầu để bánh mì không bị rải đè lên dòng này
+    $("lock-to").hidden = false;
+    $("lock-to").textContent = "Đang mở con dấu...";
+  }
+  letterPromise.then((letter) => {
+    if (!isSlug) return;
+    const to = $("lock-to");
+    to.hidden = false;
+    if (!letter) {
+      // Không có trong danh sách: có thể là link tên kiểu cũ (base64 từ link.html)
+      const decoded = decodeName(slug);
+      if (decoded !== slug) {
+        rawName = decoded.slice(0, 60);
+        $("guest").textContent = rawName;
+        document.title = `Gửi ${rawName} · Thiệp mời của ${C.host}`;
+        to.hidden = true;
+        return;
+      }
+      to.classList.add("error");
+      to.textContent = `Link chưa đúng rồi, kiểm tra lại link ${C.host} gửi nha!`;
+      return;
+    }
+    rawName = letter.name;
+    if (letter.wrongLink) {
+      to.classList.add("error");
+      to.textContent = `Link chưa đúng rồi, kiểm tra lại link ${C.host} gửi nha!`;
+    } else to.replaceChildren("Thư gửi ", Object.assign(document.createElement("strong"), { textContent: letter.name }));
+    $("guest").textContent = letter.name;
+    document.title = `Gửi ${letter.name} · Thiệp mời của ${C.host}`;
+    $("invite-message").textContent = `Mời ${letter.you} đến chung vui ngày tốt nghiệp của ${letter.me} nha!`;
+    $("sign-line").textContent = `Mong được gặp ${letter.you} hôm đó nha!`;
+
+    const letterUrl = letter.url;
+    const file = `Thu_moi_${letter.name.replace(/\s+/g, "_")}.png`;
+    $("letter-img").src = letterUrl;
+    $("letter-img").alt = `Thư mời tốt nghiệp gửi ${letter.name}`;
+    for (const id of ["btn-download", "letter-download", "letter-save"]) {
+      Object.assign($(id), { href: letterUrl, download: file });
+    }
+    $("btn-download").hidden = false;
+    $("letter").hidden = false;
+  });
 
   // ---------- Vịt ----------
   Duck.create();
@@ -213,28 +278,9 @@
     Duck.goTo(p.x, p.y + 18);
   });
 
-  $("btn-share").addEventListener("click", async () => {
-    const url = location.href;
-    try {
-      if (navigator.share) await navigator.share({ title: document.title, url });
-      else {
-        await navigator.clipboard.writeText(url);
-        Duck.say("Đã copy link!");
-      }
-    } catch (_) {
-      /* người dùng huỷ */
-    }
-  });
-
   $("btn-replay").addEventListener("click", () => {
     sessionStorage.removeItem(STORAGE_KEY);
     location.reload();
-  });
-
-  $("skip").addEventListener("click", () => {
-    eaten = C.crumbs;
-    renderMeter();
-    unlock();
   });
 
   // ---------- Pháo giấy ----------

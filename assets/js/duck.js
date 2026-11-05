@@ -191,6 +191,7 @@ window.Duck = (function () {
     el.style.transform = `translate(${snap(x - W / 2)}px, ${snap(y - H)}px)`;
     el.style.zIndex = String(50 + Math.round(y / 10));
     flip.style.transform = `scaleX(${facing})`;
+    if (bubble) fitBubble();
   }
 
   let footSide = 0;
@@ -205,9 +206,21 @@ window.Duck = (function () {
     setTimeout(() => f.remove(), 1600);
   }
 
+  // Giữ bong bóng thoại nằm trong màn hình khi vịt đứng sát mép
+  let bubbleW = 0;
+  function fitBubble() {
+    if (bubble.hidden) return;
+    const left = x - bubbleW / 2;
+    const right = x + bubbleW / 2;
+    const shift = Math.max(8 - left, 0) - Math.max(right - (innerWidth - 8), 0);
+    bubble.style.marginLeft = Math.round(shift) + "px";
+  }
+
   function say(text, ms = 2200) {
     bubble.textContent = text;
     bubble.hidden = false;
+    bubbleW = bubble.offsetWidth;
+    fitBubble();
     bubble.classList.remove("pop");
     void bubble.offsetWidth;
     bubble.classList.add("pop");

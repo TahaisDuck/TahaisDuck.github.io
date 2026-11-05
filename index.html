@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261105-2">
 </head>
 <body>
   <!-- Cảnh nền pixel (pixel.js tự vẽ) -->
@@ -30,6 +30,7 @@
           Chú vịt đang đói. Chạm vào <strong>miếng bánh mì <i class="pxi" data-icon="bread"></i></strong>
           để vịt chạy tới ăn, ăn đủ <strong data-config="crumbs"></strong> miếng là thư sẽ mở.
         </p>
+        <p id="lock-to" class="lock-to" hidden></p>
         <div id="crumb-meter" class="crumb-meter" aria-label="Số bánh mì vịt đã ăn"></div>
         <p class="hint">Máy tính: dùng phím mũi tên hoặc W A S D để điều khiển vịt.</p>
       </div>
@@ -37,7 +38,6 @@
       <div id="envelope" class="envelope"></div>
 
       <p id="lock-status" class="lock-status px-box" role="status"></p>
-      <button id="skip" type="button" class="skip">&gt; Bỏ qua, mở thư luôn</button>
     </section>
 
     <!-- Bước 2: thiệp mời -->
@@ -46,9 +46,9 @@
         <i class="pxi corner left" data-icon="star" data-scale="4"></i>
         <i class="pxi corner right" data-icon="star" data-scale="4"></i>
         <p class="eyebrow" data-config="eyebrow"></p>
-        <p class="dear">Gửi</p>
+        <p class="dear">Thân gửi</p>
         <h1 id="guest" class="guest"></h1>
-        <p class="lead" data-config="message"></p>
+        <p id="invite-message" class="lead" data-config="message"></p>
         <div class="banner px-box"><span data-config="title"></span> của <strong data-config="host"></strong></div>
       </header>
 
@@ -90,22 +90,28 @@
       <div class="actions">
         <a id="btn-calendar" class="btn primary" target="_blank" rel="noopener"><i class="pxi" data-icon="calendar"></i> Thêm vào lịch</a>
         <a id="btn-map" class="btn" target="_blank" rel="noopener"><i class="pxi" data-icon="map"></i> Chỉ đường</a>
+        <a id="btn-download" class="btn" href="#" hidden><i class="pxi" data-icon="heart"></i> Tải thư mời</a>
         <button id="btn-feed" type="button" class="btn"><i class="pxi" data-icon="bread"></i> Cho vịt ăn</button>
-        <button id="btn-share" type="button" class="btn"><i class="pxi" data-icon="link"></i> Chia sẻ</button>
       </div>
       <p id="feed-count" class="feed-count" role="status"></p>
 
+      <figure id="letter" class="letter px-box" hidden>
+        <figcaption>Thư mời riêng cho bạn</figcaption>
+        <a id="letter-save" class="letter-save" href="#" title="Bấm để tải ảnh về máy"><img id="letter-img" alt=""></a>
+        <a id="letter-download" class="btn primary letter-btn" href="#"><i class="pxi" data-icon="heart"></i> Tải ảnh thư mời</a>
+      </figure>
+
       <footer class="sign px-box">
-        <p>Mong được gặp bạn hôm đó nha!</p>
+        <p id="sign-line">Mong được gặp bạn hôm đó nha!</p>
         <p class="signature">Thân mến, <span data-config="host"></span> <i class="pxi" data-icon="heart"></i></p>
         <button id="btn-replay" type="button" class="link-btn">&lt; Xem lại từ đầu</button>
       </footer>
     </section>
   </main>
 
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/pixel.js"></script>
-  <script src="assets/js/duck.js"></script>
-  <script src="assets/js/app.js"></script>
+  <script src="assets/js/config.js?v=20261105-2"></script>
+  <script src="assets/js/pixel.js?v=20261105-2"></script>
+  <script src="assets/js/duck.js?v=20261105-2"></script>
+  <script src="assets/js/app.js?v=20261105-2"></script>
 </body>
 </html>

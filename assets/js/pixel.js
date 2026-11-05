@@ -239,6 +239,17 @@ window.Pixel = (function () {
     add(cloud, 3, "cloud c3");
     add(hillBig, big, "hill h1");
     add(hillSmall, big, "hill h2");
+    // Khuôn viên trường: dãy nhà trái/phải neo vào hai mép, cây ở giữa
+    const campus = document.createElement("div");
+    campus.className = "campus";
+    ["left", "tree", "right"].forEach((part) => {
+      const piece = new Image();
+      piece.src = `assets/img/campus-${part}.png?v=20261105-2`;
+      piece.alt = "";
+      piece.className = `px campus-${part}`;
+      campus.appendChild(piece);
+    });
+    scene.appendChild(campus);
     const grass = document.createElement("div");
     grass.className = "grass";
     grass.style.backgroundImage = `url(${grassTile.url})`;

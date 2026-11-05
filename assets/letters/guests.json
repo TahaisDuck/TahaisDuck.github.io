@@ -1,0 +1,157 @@
+{
+  "anh-danh": {
+    "name": "Anh Danh",
+    "you": "anh",
+    "me": "em"
+  },
+  "chi-anltd": {
+    "name": "Chị ÂnLTD",
+    "you": "chị",
+    "me": "em"
+  },
+  "chi-thonht": {
+    "name": "Chị ThỏNHT",
+    "you": "chị",
+    "me": "em"
+  },
+  "chi-chau-doan": {
+    "name": "Chị Châu Đoan",
+    "you": "chị",
+    "me": "em"
+  },
+  "anh-bao-bao": {
+    "name": "Anh Bảo Bảo",
+    "you": "anh",
+    "me": "em"
+  },
+  "anh-phuong": {
+    "name": "Anh Phương",
+    "you": "anh",
+    "me": "em"
+  },
+  "chi-ngoc-anh": {
+    "name": "Chị Ngọc Ánh",
+    "you": "chị",
+    "me": "em"
+  },
+  "anh-thanh-danh": {
+    "name": "Anh Thành Danh",
+    "you": "anh",
+    "me": "em"
+  },
+  "anh-quang-long": {
+    "name": "Anh Quang Long",
+    "you": "anh",
+    "me": "em"
+  },
+  "anh-ty": {
+    "name": "Anh Ty",
+    "you": "anh",
+    "me": "em"
+  },
+  "em-ty": {
+    "name": "Em Ty",
+    "you": "em",
+    "me": "chị"
+  },
+  "em-ngoc-tram": {
+    "name": "Em Ngọc Trâm",
+    "you": "em",
+    "me": "chị"
+  },
+  "em-duc-anh": {
+    "name": "Em Đức Anh",
+    "you": "em",
+    "me": "chị"
+  },
+  "em-duc-khai": {
+    "name": "Em Đức Khải",
+    "you": "em",
+    "me": "chị"
+  },
+  "em-thanh-tai": {
+    "name": "Em Thành Tài",
+    "you": "em",
+    "me": "chị"
+  },
+  "em-quang-thai": {
+    "name": "Em Quang Thái",
+    "you": "em",
+    "me": "chị"
+  },
+  "em-bao-long": {
+    "name": "Em Bảo Long",
+    "you": "em",
+    "me": "chị"
+  },
+  "em-guoc-quoc-huu": {
+    "name": "Em guộc Quốc Hữu",
+    "you": "em guộc",
+    "me": "chị"
+  },
+  "em-guoc-dong-tien": {
+    "name": "Em guộc Đồng Tiến",
+    "you": "em guộc",
+    "me": "chị"
+  },
+  "em-guoc-hai-dang": {
+    "name": "Em guộc Hải Đăng",
+    "you": "em guộc",
+    "me": "chị"
+  },
+  "ban-minh-chem": {
+    "name": "Bạn Minh Chem",
+    "you": "bạn",
+    "me": "mình"
+  },
+  "ban-thuy-nhi": {
+    "name": "Bạn Thuý Nhi",
+    "you": "bạn",
+    "me": "mình"
+  },
+  "ban-my-duyen": {
+    "name": "Bạn Mỹ Duyên",
+    "you": "bạn",
+    "me": "mình"
+  },
+  "ban-thien-phuc": {
+    "name": "Bạn Thiên Phúc",
+    "you": "bạn",
+    "me": "mình"
+  },
+  "ban-phu-thinh": {
+    "name": "Bạn Phú Thịnh",
+    "you": "bạn",
+    "me": "mình"
+  },
+  "ban-thu-ha": {
+    "name": "Bạn Thu Hà",
+    "you": "bạn",
+    "me": "mình"
+  },
+  "ban-tan-loy": {
+    "name": "Bạn Tấn Loy",
+    "you": "bạn",
+    "me": "mình"
+  },
+  "ban-xuan-khoa": {
+    "name": "Bạn Xuân Khoa",
+    "you": "bạn",
+    "me": "mình"
+  },
+  "ban-ngoc-giau": {
+    "name": "Bạn Ngọc Giàu",
+    "you": "bạn",
+    "me": "mình"
+  },
+  "anh-minh-nhut": {
+    "name": "Anh Minh Nhựt",
+    "you": "anh",
+    "me": "em"
+  },
+  "moi-nguoi": {
+    "name": "Mọi người",
+    "you": "mọi người",
+    "me": "mình"
+  }
+}
